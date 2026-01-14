@@ -5,4 +5,5 @@ To reflect the brand’s eco-conscious values, the interface adopts a minimalist
 UI/UX Designer & Frontend Developer
 ## Tools & Technologies 
 Design & Prototyping: Figma
+[View Figma Prototype] (https://www.figma.com/design/zpOdpAg5kInTxZD4HbntGa/Untitled?node-id=0-1&t=rj7LUTXDApvIWaJF-1)
 Frontend: JavaScript, HTML, CSS
