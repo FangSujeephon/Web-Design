@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Female / Pants / Skirt</title>
+  <link rel="stylesheet" href="../../css/Shop.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <img src="../../img/Homeimg/Loco_tripple.png" alt="Loco">
+    <ul class="nav-links">
+      <li><a href="../../Home.html">HOME</a></li>
+
+      <li class="dropdown">
+        <a href="../ShopMain.html" class="active">SHOP</a>
+        <ul class="dropdown-menu level-1">
+          <li class="dropdown">
+            <a href="#">Male</a>
+            <ul class="dropdown-menu level-2">
+              <li class="dropdown">
+                <a href="#">Clothing</a>
+                <ul class="dropdown-menu level-3">
+                  <li><a href="../Male/T-shirtMale.html">T-shirt</a></li>
+                  <li><a href="../Male/TankTopMale.html">Tank Top</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#">Pants</a>
+                <ul class="dropdown-menu level-3">
+                  <li><a href="../Male/JeansMale.html">Jeans</a></li>
+                  <li><a href="../Male/SkirtMale.html">Skirt</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#">Accessories</a>
+                <ul class="dropdown-menu level-3">
+                  <li><a href="../Male/BagMale.html">Bag</a></li>
+                  <li><a href="../Male/BraceletMale.html">Bracelet</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a href="#">Female</a>
+            <ul class="dropdown-menu level-2">
+              <li class="dropdown">
+                <a href="#">Clothing</a>
+                <ul class="dropdown-menu level-3">
+                  <li><a href="../Female/T-shirt.html">T-shirt</a></li>
+                  <li><a href="../Female/TankTop.html">Tank Top</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#">Pants</a>
+                <ul class="dropdown-menu level-3">
+                  <li><a href="../Female/Jeans.html">Jeans</a></li>
+                  <li><a href="../Female/Skirt.html">Skirt</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#">Accessories</a>
+                <ul class="dropdown-menu level-3">
+                  <li><a href="./Bag.html" class="active">Bag</a></li>
+                  <li><a href="./Bracelet.html">Bracelet</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <li><a href="../../Collection.html">COLLECTION</a></li>
+      <li><a href="../../AboutUs.html">ABOUT US</a></li>
+    </ul>
+
+    <div class="icons">
+      <div class="search-bar">
+        <input type="text" placeholder="Search..." />
+        <button type="submit">
+          <img src="https://img.icons8.com/?size=100&id=LnlEQU5pxlIU&format=png&color=000000" alt="Search Icon">
+        </button>
+      </div>
+      <a href="../../MyCart.html" class="icon-link">
+        <img src="https://img.icons8.com/?size=100&id=15893&format=png&color=000000" alt="Cart Icon">
+      </a>
+      <a href="../../Profile.html" class="icon-link">
+        <img src="https://img.icons8.com/?size=100&id=15265&format=png&color=000000" alt="Profile Icon">
+      </a>
+    </div>
+  </nav>
+
+  <section class="shop-section">
+    <div class="shop-header">
+      <h2>Female / Pants / Skirt</h2>
+      <p>0 Products</p>
+    </div>
+
+    <div class="product-grid"></div>
+  </section>
+
+  <script>
+    window.FORCE_GENDER   = 'female';
+    window.FORCE_CATEGORY = 'pants';
+    window.FORCE_TYPE     = 'skirt';
+  </script>
+
+  <script src="../../js/products.js"></script>
+  <script src="../../js/Shop.js"></script>
+</body>
+</html>

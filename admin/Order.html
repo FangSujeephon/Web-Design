@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Triple Burrry</title>
+  <link rel="stylesheet" href="../css/dash.css" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-title">TRIPLE BURRRY ADMIN</span>
+    </div>
+    <nav class="menu">
+      <a class="menu-item" href="./Dashboard.html"><span class="mi-dot"></span> Dashboard</a>
+      <a class="menu-item" href="./Product.html"><span class="mi-box"></span> Products</a>
+      <a class="menu-item" href="./Order.html"><span class="mi-clipboard"></span> Orders</a>
+      <a class="menu-item" href="./User.html"><span class="mi-user"></span> Users</a>
+      <div class="menu-sep"></div>
+      <a class="menu-item danger" href="../auth/signin.html"><span class="mi-logout"></span> Log out</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <form class="search" onsubmit="return false;">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Search users" aria-label="Search users"/>
+      </form>
+      <div class="topbar-right">
+        <div class="profile">
+          <img src="../img/etc/cutie.png" alt="Profile" />
+          <div class="profile-meta">
+            <strong>Fahnuea</strong>
+            <span>Admin</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Card: Recent Purchases -->
+    <section class="card">
+      <header class="card-head between">
+        <h3>Recent Purchases</h3>
+        <button class="more" aria-label="more">⋮</button>
+      </header>
+
+      <div class="table-wrap">
+        <table class="table" id="users-table">
+          <thead>
+            <tr>
+              <th style="width:40px;">
+                <input id="select-all" type="checkbox" aria-label="select all">
+              </th>
+              <th class="sortable" data-key="product" aria-sort="none">Product</th>
+              <th class="sortable" data-key="orderId" aria-sort="none">Order ID</th>
+              <th class="sortable" data-key="date" aria-sort="descending">Date</th>
+              <th class="sortable" data-key="customer" aria-sort="none">Customer Name</th>
+              <th class="sortable" data-key="status" aria-sort="none">Status</th>
+              <th class="sortable text-right" data-key="amount" aria-sort="none">Amount</th>
+            </tr>
+          </thead>
+          <tbody><!-- filled by JS --></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Scripts ===== -->
+
+  <!-- ทำเมนู sidebar ให้ active อัตโนมัติ -->
+  <script>
+    (function () {
+      const current = location.pathname.split('/').pop().toLowerCase() || 'dashboard.html';
+      document.querySelectorAll('.menu a.menu-item').forEach(a => {
+        const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
+        if (href === current) {
+          a.classList.add('active');
+          a.setAttribute('aria-current', 'page');
+        } else {
+          a.classList.remove('active');
+          a.removeAttribute('aria-current');
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    // ========== Mock data ==========
+    const MOCK_ORDERS = [
+      { product: "Handmade Linen Tote",           orderId: "TB-001248", date: "2025-10-09T16:25:00+07:00", customer: "Sasiwan K.",   status: "Completed",  amount: 1290 },
+      { product: "Vintage Denim Jacket (M)",      orderId: "TB-001247", date: "2025-10-09T15:40:00+07:00", customer: "Jirawat P.",  status: "Processing", amount: 890 },
+      { product: "Crochet Beanie",                orderId: "TB-001246", date: "2025-10-09T14:05:00+07:00", customer: "Nattapong L.",status: "Pending",    amount: 320 },
+      { product: "Second-hand Canvas Sneakers",   orderId: "TB-001245", date: "2025-10-09T12:55:00+07:00", customer: "Mayuree T.",  status: "Cancelled",  amount: 0 },
+      { product: "Upcycled Patchwork Skirt",      orderId: "TB-001244", date: "2025-10-08T19:30:00+07:00", customer: "Ploy P.",     status: "Completed",  amount: 720 },
+      { product: "Macramé Plant Hanger",          orderId: "TB-001243", date: "2025-10-08T17:11:00+07:00", customer: "Thanakorn R.",status: "Processing", amount: 260 },
+      { product: "Reworked Graphic Tee (L)",      orderId: "TB-001242", date: "2025-10-08T10:45:00+07:00", customer: "Kanyarat S.", status: "Completed",  amount: 450 },
+      { product: "Hand-stitched Wallet",          orderId: "TB-001241", date: "2025-10-07T21:18:00+07:00", customer: "Somchai P.",  status: "Pending",    amount: 390 },
+      { product: "Crochet Cardigan",              orderId: "TB-001240", date: "2025-10-07T16:02:00+07:00", customer: "Arisa K.",    status: "Completed",  amount: 1150 },
+      { product: "Denim Tote (Upcycled)",         orderId: "TB-001239", date: "2025-10-07T09:37:00+07:00", customer: "Pattama C.",  status: "Processing", amount: 520 },
+      { product: "Beaded Phone Strap",            orderId: "TB-001238", date: "2025-10-06T20:10:00+07:00", customer: "Warunyu M.",  status: "Completed",  amount: 180 },
+      { product: "Wool Beret (2nd-hand)",         orderId: "TB-001237", date: "2025-10-06T11:22:00+07:00", customer: "Chayanit T.", status: "Cancelled",  amount: 0 }
+    ];
+
+    // ========== Helpers ==========
+    const statusClass = (s) => ({
+      "Completed":  "success",
+      "Pending":    "warning",
+      "Processing": "info",
+      "Cancelled":  "danger"
+    }[s] || "neutral");
+
+    const formatTHB = (n) =>
+      new Intl.NumberFormat("th-TH", { style: "currency", currency: "THB" }).format(n);
+
+    const formatDate = (iso) =>
+      new Date(iso).toLocaleString("th-TH", {
+        year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit"
+      });
+
+    // ========== Render (no internal sort) ==========
+    function renderOrders(rows) {
+      const tbody = document.querySelector("#users-table tbody");
+      if (!tbody) return;
+      const data = rows; // ไม่ sort ซ้ำ
+      tbody.innerHTML = data.map(row => `
+        <tr>
+          <td><input type="checkbox" aria-label="select row"></td>
+          <td>${row.product}</td>
+          <td>#${row.orderId}</td>
+          <td>${formatDate(row.date)}</td>
+          <td>${row.customer}</td>
+          <td><span class="badge ${statusClass(row.status)}">${row.status}</span></td>
+          <td class="text-right">${formatTHB(row.amount)}</td>
+        </tr>
+      `).join("");
+    }
+
+    // ========== Select-all ==========
+    function initSelectAll() {
+      const table = document.getElementById('users-table');
+      const selectAll = document.getElementById('select-all');
+      if (!table || !selectAll) return;
+
+      const rowChecks = () => table.querySelectorAll('tbody input[type="checkbox"]');
+
+      selectAll.addEventListener('change', () => {
+        rowChecks().forEach(chk => chk.checked = selectAll.checked);
+        selectAll.indeterminate = false;
+      });
+
+      table.addEventListener('change', (e) => {
+        if (!e.target.matches('tbody input[type="checkbox"]')) return;
+        const checks = Array.from(rowChecks());
+        const allChecked = checks.every(c => c.checked);
+        const noneChecked = checks.every(c => !c.checked);
+        selectAll.checked = allChecked;
+        selectAll.indeterminate = !allChecked && !noneChecked;
+      });
+    }
+
+    // ========== Sorting ==========
+    let SORT = { key: 'date', dir: 'desc' };              // เริ่มต้นเรียงตามวันที่ใหม่→เก่า
+    const CURRENT_ROWS = [...MOCK_ORDERS];                // แหล่งข้อมูลปัจจุบัน
+
+    function normalizeForSort(row, key) {
+      switch (key) {
+        case 'amount':  return Number(row.amount) || 0;
+        case 'date':    return new Date(row.date).getTime();
+        case 'orderId': return parseInt(String(row.orderId).replace(/\D/g, ''), 10) || 0; // TB-001248 -> 1248
+        case 'status': {
+          const order = { Completed: 4, Processing: 3, Pending: 2, Cancelled: 1 };
+          return order[row.status] || 0;
+        }
+        default:        return String(row[key] || '').toLowerCase();
+      }
+    }
+
+    function sortRows(rows, key, dir) {
+      const sign = dir === 'asc' ? 1 : -1;
+      return [...rows].sort((a, b) => {
+        const va = normalizeForSort(a, key);
+        const vb = normalizeForSort(b, key);
+        if (va < vb) return -1 * sign;
+        if (va > vb) return  1 * sign;
+        return 0;
+      });
+    }
+
+    function rerender() {
+      const sorted = sortRows(CURRENT_ROWS, SORT.key, SORT.dir);
+      renderOrders(sorted);
+    }
+
+    function initSortableHeaders() {
+      const headers = document.querySelectorAll('#users-table thead th.sortable');
+      headers.forEach(th => {
+        th.tabIndex = 0;
+        th.addEventListener('click', () => handleSortClick(th));
+        th.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleSortClick(th);
+          }
+        });
+      });
+    }
+
+    function handleSortClick(th) {
+      const key = th.dataset.key;
+      if (!key) return;
+
+      if (SORT.key === key) {
+        SORT.dir = SORT.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        SORT.key = key;
+        SORT.dir = (key === 'date' || key === 'orderId' || key === 'amount') ? 'desc' : 'asc';
+      }
+
+      // อัปเดต aria-sort + ลูกศร
+      document.querySelectorAll('#users-table thead th.sortable').forEach(h => {
+        h.setAttribute('aria-sort', 'none');
+        h.classList.remove('sort-asc', 'sort-desc');
+      });
+      th.setAttribute('aria-sort', SORT.dir === 'asc' ? 'ascending' : 'descending');
+      th.classList.add(SORT.dir === 'asc' ? 'sort-asc' : 'sort-desc');
+
+      rerender();
+    }
+
+    // ===== Boot =====
+    rerender();          // แรกเข้าเรียงตาม date desc
+    initSelectAll();     // ตั้งค่า select-all
+    initSortableHeaders();
+  </script>
+</body>
+</html>
